@@ -6,29 +6,38 @@
 /*   By: souhsain <souhsain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 10:25:14 by souhsain          #+#    #+#             */
-/*   Updated: 2025/11/13 12:27:35 by souhsain         ###   ########.fr       */
+/*   Updated: 2025/11/13 13:20:13 by souhsain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 #include <stdio.h>
 
-int putnbr(int n, int *count)
-{
-	char	c;
+// int putnbr(int n, int *count)
+// {
+// 	char	c;
 	
-	if(n == -2147483648)
-		return (*count = write(1 ,"-2147483648", 11));
-	if (n < 0)
-	{
-		*count += write(1,"-", 1);
-		n *= -1;
-	}
-	if(n > 9)
-		putnbr(n / 10, count);
-	c = (n % 10) + '0';
-	return (*count += write(1, &c, 1), *count);
-}
+// 	if(n == -2147483648)
+// 		return (*count = write(1 ,"-2147483648", 11));
+// 	if (n < 0)
+// 	{
+// 		*count += write(1,"-", 1);
+// 		n *= -1;
+// 	}
+// 	if(n > 9)
+// 		putnbr(n / 10, count);
+// 	c = (n % 10) + '0';
+// 	return (*count += write(1, &c, 1), *count);
+// }
+// int	print_unsignednum(va_list arg)
+// {
+// 	unsigned	num;
+// 	int count;
+
+// 	count = 0;
+// 	num = va_arg(arg, unsigned int);
+// 	return(putnbr(num, &count), count);
+// }
 int	check_is_specifier(char specifier, va_list args)
 {
 	char *s;
@@ -46,7 +55,9 @@ int	check_is_specifier(char specifier, va_list args)
 		return (l = ft_strlen(s), write(1, s, l));
 	}
 	if (specifier == 'd' || specifier == 'i')
-		return(l = va_arg(args, int), putnbr(l, &count), count);
+		return(print_signednum(args));
+	if (specifier == 'u')
+		return (print_unsignednum(args));
 	else if (specifier == '%')
 		return(write(1, "%", 1));
 	else
