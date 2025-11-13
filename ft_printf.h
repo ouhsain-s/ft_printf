@@ -1,23 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf_utilc.c                                  :+:      :+:    :+:   */
+/*   ft_printf.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: souhsain <souhsain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/12 11:32:49 by souhsain          #+#    #+#             */
-/*   Updated: 2025/11/13 10:39:28 by souhsain         ###   ########.fr       */
+/*   Created: 2025/11/13 10:30:10 by souhsain          #+#    #+#             */
+/*   Updated: 2025/11/13 10:39:12 by souhsain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#ifndef FT_PRINTF_H
+# define FT_PRINTF_H
 
-int  ft_strlen(const char *s)
-{
-        int  count;
+#include <unistd.h>
+#include <stddef.h>
+#include <stdarg.h>
 
-        count = 0;
-        while (s[count] != '\0')
-                count++;
-        return (count);
-}
+int  ft_strlen(const char *s);
+
+#endif
