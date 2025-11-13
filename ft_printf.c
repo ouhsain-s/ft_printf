@@ -6,65 +6,41 @@
 /*   By: souhsain <souhsain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 10:25:14 by souhsain          #+#    #+#             */
-/*   Updated: 2025/11/13 13:20:13 by souhsain         ###   ########.fr       */
+/*   Updated: 2025/11/13 17:00:34 by souhsain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 #include <stdio.h>
 
-// int putnbr(int n, int *count)
-// {
-// 	char	c;
-	
-// 	if(n == -2147483648)
-// 		return (*count = write(1 ,"-2147483648", 11));
-// 	if (n < 0)
-// 	{
-// 		*count += write(1,"-", 1);
-// 		n *= -1;
-// 	}
-// 	if(n > 9)
-// 		putnbr(n / 10, count);
-// 	c = (n % 10) + '0';
-// 	return (*count += write(1, &c, 1), *count);
-// }
-// int	print_unsignednum(va_list arg)
-// {
-// 	unsigned	num;
-// 	int count;
-
-// 	count = 0;
-// 	num = va_arg(arg, unsigned int);
-// 	return(putnbr(num, &count), count);
-// }
 int	check_is_specifier(char specifier, va_list args)
 {
 	char *s;
 	char c;
 	int l;
-	int count;
 	
-	count = 0;
 	if (specifier == 'c')
 		return (c = va_arg(args, int), write(1, &c, 1));
 	if (specifier == 's')
 	{
 		if (!(s = va_arg(args, char *)))
 			s = "(null)";
-		return (l = ft_strlen(s), write(1, s, l));
+		return (write(1, s, ft_strlen(s)));
 	}
 	if (specifier == 'd' || specifier == 'i')
 		return(print_signednum(args));
 	if (specifier == 'u')
 		return (print_unsignednum(args));
-	else if (specifier == '%')
+	if (specifier == 'x' || specifier == 'X')
+		return (print_as_hex(args, specifier));
+	if (specifier == 'p')
+		return(print_hex_address(args));
+	if (specifier == '%')
 		return(write(1, "%", 1));
-	else
-		return(write(1, "%", 1) + write(1, &specifier, 1));
+	return(write(1, "%", 1) + write(1, &specifier, 1));
 }
 
-int ft_printf(char  *specifiers, ...)
+int ft_printf(const char  *specifiers, ...)
 {
 	va_list args;
 	int count;
@@ -92,60 +68,49 @@ int ft_printf(char  *specifiers, ...)
 }
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <limits.h>
+#include <unistd.h>
 
 int main(void)
 {
-    int origin, my;
+    int i = 42;
+    unsigned int u = 3000000000U;
+    void *p = &i;
+    char *s = "Hello, world!";
+    char c = 'A';
 
-    // 1. رقم موجب كبير
-    origin = printf("1>>%d<<\n", 2147483647);
-    my     = ft_printf("1>>%d<<\n", 2147483647);
-    printf("| origin = %d | my = %d |\n\n", origin, my);
+    // ==== %c ====
+    ft_printf("Test %%c normal: %c\n", c);
+    ft_printf("Test %%c zero: %c\n", '\0');
 
-    // 2. رقم سالب كبير
-    origin = printf("2>>%d<<\n", -2147483648);
-    my     = ft_printf("2>>%d<<\n", -2147483648);
-    printf("| origin = %d | my = %d |\n\n", origin, my);
+    // ==== %s ====
+    ft_printf("Test %%s normal: %s\n", s);
+    ft_printf("Test %%s empty: %s\n", "");
+    ft_printf("Test %%s NULL: %s\n", (char *)NULL);
 
-    // 3. رقم صفر
-    origin = printf("3>>%d<<\n", 0);
-    my     = ft_printf("3>>%d<<\n", 0);
-    printf("| origin = %d | my = %d |\n\n", origin, my);
+    // ==== %p ====
+    ft_printf("Test %%p non-NULL: %p\n", p);
+    ft_printf("Test %%p NULL: %p\n", NULL);
 
-    // 4. حرف عادي
-    origin = printf("4>>%c<<\n", 'A');
-    my     = ft_printf("4>>%c<<\n", 'A');
-    printf("| origin = %d | my = %d |\n\n", origin, my);
+    // ==== %d / %i ====
+    ft_printf("Test %%d positive: %d\n", i);
+    ft_printf("Test %%d negative: %d\n", -i);
+    ft_printf("Test %%i zero: %i\n", 0);
+    ft_printf("Test %%d INT_MAX: %d\n", INT_MAX);
+    ft_printf("Test %%d INT_MIN: %d\n", INT_MIN);
 
-    // 5. سلسلة عادية
-    origin = printf("5>>%s<<\n", "Hello World!");
-    my     = ft_printf("5>>%s<<\n", "Hello World!");
-    printf("| origin = %d | my = %d |\n\n", origin, my);
+    // ==== %u ====
+    ft_printf("Test %%u zero: %u\n", 0U);
+    ft_printf("Test %%u large: %u\n", u);
 
-    // 6. سلسلة فارغة
-    origin = printf("6>>%s<<\n", "");
-    my     = ft_printf("6>>%s<<\n", "");
-    printf("| origin = %d | my = %d |\n\n", origin, my);
+    // ==== %x / %X ====
+    ft_printf("Test %%x lower small: %x\n", 3735928559U);
+    ft_printf("Test %%X upper small: %X\n", 3735928559U);
+    ft_printf("Test %%x zero: %x\n", 0U);
 
-    // 7. سلسلة NULL
-    origin = printf("7>>%s<<\n", NULL);
-    my     = ft_printf("7>>%s<<\n", NULL);
-    printf("| origin = %d | my = %d |\n\n", origin, my);
-
-    // 8. نسبة مئوية
-    origin = printf("8>>%%<<\n");
-    my     = ft_printf("8>>%%<<\n");
-    printf("| origin = %d | my = %d |\n\n", origin, my);
-
-    // 9. دمج عدة أنواع
-    origin = printf("9>>%s %c %d<<\n", "Test", 'X', -12345);
-    my     = ft_printf("9>>%s %c %d<<\n", "Test", 'X', -12345);
-    printf("| origin = %d | my = %d |\n\n", origin, my);
-
-    // 10. سلسلة طويلة + رقم كبير
-    origin = printf("10>>%s %d<<\n", "This is a very long string for testing", 987654321);
-    my     = ft_printf("10>>%s %d<<\n", "This is a very long string for testing", 987654321);
-    printf("| origin = %d | my = %d |\n\n", origin, my);
+    // ==== %% ====
+    ft_printf("Test %% percent: %%\n");
 
     return 0;
 }

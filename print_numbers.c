@@ -6,7 +6,7 @@
 /*   By: souhsain <souhsain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/13 13:09:54 by souhsain          #+#    #+#             */
-/*   Updated: 2025/11/13 13:18:54 by souhsain         ###   ########.fr       */
+/*   Updated: 2025/11/13 15:51:47 by souhsain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ int putnbr(unsigned int n)
 
     count = 0;
 	if(n > 9)
-		count += putnbr(n / 10);
+		count = putnbr(n / 10);
 	c = (n % 10) + '0';
-	return (count += write(1, &c, 1), count);
+	return (count + write(1, &c, 1));
 }
 int	print_unsignednum(va_list arg)
 {
