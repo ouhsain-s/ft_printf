@@ -6,12 +6,11 @@
 /*   By: souhsain <souhsain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 10:25:14 by souhsain          #+#    #+#             */
-/*   Updated: 2025/11/14 10:08:50 by souhsain         ###   ########.fr       */
+/*   Updated: 2025/11/14 12:16:09 by souhsain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-#include <stdio.h>
 
 static int	check_is_specifier(char specifier, va_list args)
 {
