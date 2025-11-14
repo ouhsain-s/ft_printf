@@ -6,11 +6,11 @@
 #    By: souhsain <souhsain@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/13 17:14:09 by souhsain          #+#    #+#              #
-#    Updated: 2025/11/13 17:52:01 by souhsain         ###   ########.fr        #
+#    Updated: 2025/11/14 10:29:35 by souhsain         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = ft_printf.a
+NAME = libftprintf.a
 CC = cc
 CFLAGC = -Wall -Wextra -Werror
 SRCS = ft_printf.c ft_printf_utilc.c print_hex.c print_numbers.c

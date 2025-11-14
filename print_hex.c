@@ -6,7 +6,7 @@
 /*   By: souhsain <souhsain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/13 15:13:42 by souhsain          #+#    #+#             */
-/*   Updated: 2025/11/13 17:07:01 by souhsain         ###   ########.fr       */
+/*   Updated: 2025/11/14 10:16:46 by souhsain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,26 +22,27 @@ static int	print_bites_ashex(long num, char *index)
 	return (count + write(1, &index[num % 16], 1));
 }
 
-int print_as_hex(va_list arg, char larg)
+int	print_as_hex(va_list arg, char larg)
 {
-	unsigned int num;
-	char *index;
+	unsigned int	num;
+	char			*index;
 
-	if(larg == 'x')
+	if (larg == 'x')
 		index = "0123456789abcdef";
 	else
 		index = "0123456789ABCDEF";
 	num = va_arg(arg, unsigned int);
 	return (print_bites_ashex(num, index));
 }
+
 int	print_hex_address(va_list arg)
 {
 	long	num;
 	void	*p;
-	
+
 	p = va_arg(arg, void *);
 	if (!p)
-		return(write(1, "(null)", 6));
+		return (write(1, "(null)", 6));
 	num = (long)p;
-	return (write(1,"0x", 2) + print_bites_ashex(num, "0123456789abcdef"));
+	return (write(1, "0x", 2) + print_bites_ashex(num, "0123456789abcdef"));
 }
