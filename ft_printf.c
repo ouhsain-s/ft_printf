@@ -6,7 +6,7 @@
 /*   By: souhsain <souhsain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 10:25:14 by souhsain          #+#    #+#             */
-/*   Updated: 2025/11/14 12:16:09 by souhsain         ###   ########.fr       */
+/*   Updated: 2025/11/15 17:47:43 by souhsain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,29 +39,29 @@ static int	check_is_specifier(char specifier, va_list args)
 	return (write(1, "%", 1) + write(1, &specifier, 1));
 }
 
-int	ft_printf(const char *specifiers, ...)
+int	ft_printf(const char *s, ...)
 {
 	va_list	args;
 	int		count;
 	int		check_result;
 	int		sum;
 
-	if (!specifiers)
-		return (-1);
-	va_start(args, specifiers);
+	va_start(args, s);
 	sum = 0;
 	count = 0;
-	while (specifiers[count] != '\0')
+	if (!s || (s[0] == '%' && ft_strlen(s) < 2) || write(1, "", 0) == -1)
+		return (-1);
+	while (s[count] != '\0')
 	{
-		if (specifiers[count] == '%' && specifiers[count + 1] != '\0')
+		if (s[count] == '%' && s[count + 1] != '\0')
 		{
-			check_result = check_is_specifier(specifiers[++count], args);
+			check_result = check_is_specifier(s[++count], args);
 			if (check_result < 0)
 				return (va_end(args), -1);
 			sum += check_result;
 		}
 		else
-			sum += write(1, &specifiers[count], 1);
+			sum += write(1, &s[count], 1);
 		count++;
 	}
 	return (va_end(args), sum);

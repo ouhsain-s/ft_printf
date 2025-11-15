@@ -6,13 +6,13 @@
 /*   By: souhsain <souhsain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/13 15:13:42 by souhsain          #+#    #+#             */
-/*   Updated: 2025/11/14 10:16:46 by souhsain         ###   ########.fr       */
+/*   Updated: 2025/11/15 21:59:45 by souhsain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-static int	print_bites_ashex(long num, char *index)
+static int	print_bites_ashex(unsigned long num, char *index)
 {
 	int	count;
 
@@ -37,12 +37,12 @@ int	print_as_hex(va_list arg, char larg)
 
 int	print_hex_address(va_list arg)
 {
-	long	num;
-	void	*p;
+	unsigned long	num;
+	void			*p;
 
 	p = va_arg(arg, void *);
 	if (!p)
-		return (write(1, "(null)", 6));
-	num = (long)p;
+		return (write(1, "(nil)", 5));
+	num = (unsigned long)p;
 	return (write(1, "0x", 2) + print_bites_ashex(num, "0123456789abcdef"));
 }
